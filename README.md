@@ -19,6 +19,22 @@ npm install
 npm start
 ```
 
+### Acceso directo (Windows), sin usar la terminal
+
+Tras el `npm install`, puedes abrir la app con un doble clic en **`Iniciar PDF Editor.vbs`** (en la raíz del proyecto) — no abre ninguna ventana de consola.
+
+Para tener un icono en el Escritorio, crea un acceso directo a ese `.vbs` (clic derecho sobre el archivo → *Enviar a* → *Escritorio (crear acceso directo)*), o ejecuta esto una vez en PowerShell (ajusta la ruta si clonaste el repo en otro sitio):
+
+```powershell
+$desktop = [Environment]::GetFolderPath("Desktop")
+$ws = New-Object -ComObject WScript.Shell
+$sc = $ws.CreateShortcut("$desktop\PDF Editor.lnk")
+$sc.TargetPath = "$PWD\Iniciar PDF Editor.vbs"
+$sc.WorkingDirectory = "$PWD"
+$sc.IconLocation = "$PWD\node_modules\electron\dist\electron.exe,0"
+$sc.Save()
+```
+
 ## Generar un ejecutable instalable
 
 ```bash

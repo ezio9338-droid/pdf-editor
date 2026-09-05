@@ -31,6 +31,7 @@ const OrganizeView = (() => {
   function init() {
     cacheEls();
     els.openBtn.addEventListener('click', openPdf);
+    setupDropZone();
     els.rotateBtn.addEventListener('click', rotateSelected);
     els.deleteBtn.addEventListener('click', deleteSelected);
     els.selectAllBtn.addEventListener('click', () => {
@@ -53,7 +54,10 @@ const OrganizeView = (() => {
   async function openPdf() {
     const filePaths = await ipcRenderer.invoke('dialog:openPdfPaths');
     if (!filePaths || filePaths.length === 0) return;
-    const filePath = filePaths[0];
+    await openPdfFromPath(filePaths[0]);
+  }
+
+  async function openPdfFromPath(filePath) {
     const bytes = fs.readFileSync(filePath);
     state.fileName = path.basename(filePath);
     state.workingDoc = await PDFDocument.load(bytes);
@@ -61,6 +65,24 @@ const OrganizeView = (() => {
     await rebuildRenderDoc();
     setToolsEnabled(true);
     await renderGrid();
+  }
+
+  function setupDropZone() {
+    const dropTarget = document.getElementById('view-organize');
+    dropTarget.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropTarget.classList.add('drag-over');
+    });
+    dropTarget.addEventListener('dragleave', (e) => {
+      if (e.target === dropTarget) dropTarget.classList.remove('drag-over');
+    });
+    dropTarget.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      dropTarget.classList.remove('drag-over');
+      const filePath = firstPdfPath(e.dataTransfer.files);
+      if (!filePath) return;
+      await openPdfFromPath(filePath);
+    });
   }
 
   async function rebuildRenderDoc() {
@@ -97,9 +119,13 @@ const OrganizeView = (() => {
         tile.classList.add('dragging');
       });
       tile.addEventListener('dragend', () => tile.classList.remove('dragging'));
-      tile.addEventListener('dragover', (e) => e.preventDefault());
+      tile.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
       tile.addEventListener('drop', async (e) => {
         e.preventDefault();
+        e.stopPropagation(); // es un reordenamiento interno, no un archivo externo soltado
         if (state.dragSrcIndex === null || state.dragSrcIndex === i) return;
         await reorderPage(state.dragSrcIndex, i);
         state.dragSrcIndex = null;

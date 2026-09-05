@@ -90,6 +90,14 @@ html, body {
 
 .empty-hint { margin: auto; color: #6b6c70; font-size: 14px; text-align: center; padding: 40px; }
 
+/* Resalta la vista completa mientras se arrastra un PDF encima para soltarlo */
+.view.drag-over::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  border: 3px dashed #4c8bff; background: rgba(76, 139, 255, 0.08); z-index: 50;
+}
+.view { position: relative; }
+
 /* Overlay elements (text / image) on the edit canvas */
 .overlay-el {
   position: absolute; cursor: move; border: 1px dashed transparent;

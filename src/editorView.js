@@ -40,6 +40,7 @@ const EditorView = (() => {
   function init() {
     cacheEls();
     els.openBtn.addEventListener('click', openPdf);
+    setupDropZone();
     els.textBtn.addEventListener('click', addTextOverlay);
     els.imageBtn.addEventListener('click', addImageOverlay);
     els.rotateBtn.addEventListener('click', rotateCurrentPage);
@@ -68,7 +69,10 @@ const EditorView = (() => {
   async function openPdf() {
     const filePaths = await ipcRenderer.invoke('dialog:openPdfPaths');
     if (!filePaths || filePaths.length === 0) return;
-    const filePath = filePaths[0];
+    await openPdfFromPath(filePaths[0]);
+  }
+
+  async function openPdfFromPath(filePath) {
     const bytes = fs.readFileSync(filePath);
     state.fileName = path.basename(filePath);
     state.workingDoc = await PDFDocument.load(bytes);
@@ -79,6 +83,24 @@ const EditorView = (() => {
     setToolsEnabled(true);
     renderThumbs();
     await renderCurrentPage();
+  }
+
+  function setupDropZone() {
+    const dropTarget = document.getElementById('view-edit');
+    dropTarget.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropTarget.classList.add('drag-over');
+    });
+    dropTarget.addEventListener('dragleave', (e) => {
+      if (e.target === dropTarget) dropTarget.classList.remove('drag-over');
+    });
+    dropTarget.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      dropTarget.classList.remove('drag-over');
+      const filePath = firstPdfPath(e.dataTransfer.files);
+      if (!filePath) return;
+      await openPdfFromPath(filePath);
+    });
   }
 
   async function rebuildRenderDoc() {

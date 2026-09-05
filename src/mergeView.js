@@ -26,11 +26,16 @@ const MergeView = (() => {
       render();
     });
     els.exportBtn.addEventListener('click', mergeAndSave);
+    setupDropZone();
   }
 
   async function addFiles() {
     const filePaths = await ipcRenderer.invoke('dialog:openPdfPaths');
     if (!filePaths || filePaths.length === 0) return;
+    await addFilesFromPaths(filePaths);
+  }
+
+  async function addFilesFromPaths(filePaths) {
     for (const filePath of filePaths) {
       const bytes = fs.readFileSync(filePath);
       let pageCount = '?';
@@ -41,6 +46,24 @@ const MergeView = (() => {
       files.push({ filePath, name: path.basename(filePath), bytes, pageCount });
     }
     render();
+  }
+
+  function setupDropZone() {
+    const dropTarget = document.getElementById('view-merge');
+    dropTarget.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropTarget.classList.add('drag-over');
+    });
+    dropTarget.addEventListener('dragleave', (e) => {
+      if (e.target === dropTarget) dropTarget.classList.remove('drag-over');
+    });
+    dropTarget.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      dropTarget.classList.remove('drag-over');
+      const paths = allPdfPaths(e.dataTransfer.files);
+      if (paths.length === 0) return;
+      await addFilesFromPaths(paths);
+    });
   }
 
   function render() {
@@ -72,9 +95,13 @@ const MergeView = (() => {
         li.classList.add('dragging');
       });
       li.addEventListener('dragend', () => li.classList.remove('dragging'));
-      li.addEventListener('dragover', (e) => e.preventDefault());
+      li.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
       li.addEventListener('drop', (e) => {
         e.preventDefault();
+        e.stopPropagation(); // es un reordenamiento interno, no un archivo externo soltado
         const targetIndex = idx;
         if (dragSrcIndex === null || dragSrcIndex === targetIndex) return;
         const [moved] = files.splice(dragSrcIndex, 1);

@@ -6,4 +6,4 @@ scriptDir = fso.GetParentFolderName(WScript.ScriptFullName)
 
 Set WshShell = CreateObject("WScript.Shell")
 WshShell.CurrentDirectory = scriptDir
-WshShell.Run """" & scriptDir & "\node_modules\electron\dist\electron.exe"" .", 0, False
+WshShell.Run """" & scriptDir & "\node_modules\electron\dist\electron.exe"" .", 1, False

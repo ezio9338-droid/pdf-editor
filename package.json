@@ -1,0 +1,42 @@
+{
+  "name": "pdf-editor",
+  "productName": "PDF Editor",
+  "version": "0.1.0",
+  "description": "Editor de PDF local: unir, dividir, rotar, reordenar paginas y anadir texto e imagenes libremente.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.11.174"
+  },
+  "build": {
+    "appId": "com.local.pdfeditor",
+    "productName": "PDF Editor",
+    "files": [
+      "main.js",
+      "src/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "mac": {
+      "target": "dmg"
+    }
+  },
+  "allowScripts": {
+    "electron@32.3.3": true
+  }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob: file:; script-src 'self' 'unsafe-inline';" />
+<title>PDF Editor</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <nav class="sidebar">
+      <div class="brand">PDF Editor</div>
+      <button class="nav-btn active" data-view="edit">✎ Editar PDF</button>
+      <button class="nav-btn" data-view="merge">⧉ Unir PDFs</button>
+      <button class="nav-btn" data-view="organize">⇅ Organizar / Dividir</button>
+      <div class="sidebar-footer">100% local · sin subir tus archivos</div>
+    </nav>
+
+    <main class="content">
+
+      <!-- VISTA: EDITAR -->
+      <section id="view-edit" class="view active">
+        <div class="toolbar">
+          <button id="edit-open-btn" class="btn primary">Abrir PDF</button>
+          <span class="sep"></span>
+          <button id="tool-text" class="btn tool" disabled>+ Texto</button>
+          <button id="tool-image" class="btn tool" disabled>+ Imagen</button>
+          <span class="sep"></span>
+          <button id="edit-rotate-btn" class="btn tool" disabled>⟳ Rotar página</button>
+          <button id="edit-delete-page-btn" class="btn tool danger" disabled>🗑 Borrar página</button>
+          <span class="sep"></span>
+          <label class="field" id="font-size-field" style="display:none">
+            Tamaño
+            <input type="number" id="font-size-input" min="6" max="200" value="24" />
+          </label>
+          <label class="field" id="font-color-field" style="display:none">
+            Color
+            <input type="color" id="font-color-input" value="#000000" />
+          </label>
+          <button id="delete-element-btn" class="btn tool danger" style="display:none">Eliminar elemento</button>
+          <span class="flex-spacer"></span>
+          <button id="edit-export-btn" class="btn success" disabled>Guardar como...</button>
+        </div>
+        <div class="workspace">
+          <aside class="thumbs" id="edit-thumbs"></aside>
+          <div class="canvas-area" id="edit-canvas-area">
+            <div class="empty-hint">Abre un PDF para empezar a editarlo.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA: UNIR -->
+      <section id="view-merge" class="view">
+        <div class="toolbar">
+          <button id="merge-add-btn" class="btn primary">Añadir PDFs</button>
+          <span class="flex-spacer"></span>
+          <button id="merge-clear-btn" class="btn tool">Vaciar lista</button>
+          <button id="merge-export-btn" class="btn success" disabled>Unir y guardar</button>
+        </div>
+        <div class="workspace single">
+          <ul id="merge-list" class="file-list">
+            <li class="empty-hint">Añade dos o más PDFs. Arrastra para reordenarlos.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- VISTA: ORGANIZAR / DIVIDIR -->
+      <section id="view-organize" class="view">
+        <div class="toolbar">
+          <button id="org-open-btn" class="btn primary">Abrir PDF</button>
+          <span class="sep"></span>
+          <button id="org-rotate-btn" class="btn tool" disabled>⟳ Rotar seleccionadas</button>
+          <button id="org-delete-btn" class="btn tool danger" disabled>🗑 Borrar seleccionadas</button>
+          <span class="sep"></span>
+          <button id="org-select-all-btn" class="btn tool" disabled>Seleccionar todo</button>
+          <button id="org-select-none-btn" class="btn tool" disabled>Ninguna</button>
+          <span class="flex-spacer"></span>
+          <button id="org-extract-btn" class="btn success" disabled>Extraer seleccionadas a PDF nuevo</button>
+          <button id="org-export-btn" class="btn success" disabled>Guardar cambios como...</button>
+        </div>
+        <div class="workspace single">
+          <div id="org-grid" class="page-grid">
+            <div class="empty-hint">Abre un PDF para reordenar, rotar, borrar o extraer páginas.</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="pdfSetup.js"></script>
+  <script src="dragResize.js"></script>
+  <script src="editorView.js"></script>
+  <script src="mergeView.js"></script>
+  <script src="organizeView.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

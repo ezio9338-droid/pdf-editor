@@ -7,12 +7,15 @@ Editor de PDF de escritorio, 100% local (nada se sube a internet), construido co
 - **Editar**: abre un PDF, añade cuadros de texto e imágenes en cualquier posición (arrastrar y redimensionar), rota o borra páginas, y exporta el resultado.
 - **Unir**: añade varios PDFs, reordénalos arrastrando y únelos en un solo archivo.
 - **Organizar / Dividir**: reordena páginas arrastrando, rota o borra páginas seleccionadas, extrae una selección de páginas a un PDF nuevo, o guarda los cambios sobre el documento completo.
+- **PDF a Word**: convierte un PDF en un documento de Word (`.docx`) editable. Conserva el texto, los párrafos, los títulos, la negrita/cursiva y los saltos de página; las páginas escaneadas (sin texto) se insertan como imagen.
 
 ## Requisitos
 
 - [Node.js](https://nodejs.org/) 18 o superior.
 
 ## Instalación y uso
+
+> Si ya tenías la app descargada, tras actualizarla (`git pull` o descargándola de nuevo) vuelve a ejecutar `npm install` para instalar las librerías nuevas.
 
 ```bash
 npm install
@@ -47,13 +50,15 @@ El instalable se genera en la carpeta `dist/` (usa [electron-builder](https://ww
 
 - [Electron](https://www.electronjs.org/) — ventana de escritorio.
 - [pdf-lib](https://pdf-lib.js.org/) — crear, editar, unir y dividir PDFs.
-- [pdf.js](https://mozilla.github.io/pdf.js/) — renderizar páginas para previsualizarlas.
+- [pdf.js](https://mozilla.github.io/pdf.js/) — renderizar páginas para previsualizarlas y extraer su texto.
+- [docx](https://docx.js.org/) — generar los documentos de Word.
 
 Todo el procesamiento ocurre en tu propio equipo: los archivos nunca salen de tu disco.
 
 ## Limitaciones conocidas (v0.1)
 
 - Al combinar rotación de página + superposición de texto/imagen en la misma página, la posición final puede no ser perfecta si rotas la página *después* de haber colocado elementos sobre ella. Recomendado: rota primero, luego añade texto/imágenes.
+- La conversión a Word reconstruye el texto, pero no reproduce con exactitud diseños complejos (tablas, varias columnas, posiciones exactas). Un PDF escaneado se convierte en imágenes, sin texto editable (no hay OCR).
 - El editor de texto no ajusta el texto automáticamente (sin salto de línea automático); usa Enter para saltos de línea manuales.
 
 ## Licencia

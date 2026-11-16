@@ -13,6 +13,7 @@
       <button class="nav-btn active" data-view="edit">✎ Editar PDF</button>
       <button class="nav-btn" data-view="merge">⧉ Unir PDFs</button>
       <button class="nav-btn" data-view="organize">⇅ Organizar / Dividir</button>
+      <button class="nav-btn" data-view="word">W PDF a Word</button>
       <div class="sidebar-footer">100% local · sin subir tus archivos</div>
     </nav>
 
@@ -85,6 +86,26 @@
         </div>
       </section>
 
+      <!-- VISTA: PDF A WORD -->
+      <section id="view-word" class="view">
+        <div class="toolbar">
+          <button id="word-open-btn" class="btn primary">Abrir PDF</button>
+          <span class="flex-spacer"></span>
+          <button id="word-convert-btn" class="btn success" disabled>Convertir y guardar .docx</button>
+        </div>
+        <div class="workspace single">
+          <div class="word-panel">
+            <div id="word-file" class="word-file empty-hint">Abre o arrastra un PDF aquí para convertirlo a Word (.docx).</div>
+            <div id="word-status" class="word-status"></div>
+            <p class="word-note">
+              Se conserva el texto, los párrafos, los títulos, la negrita/cursiva y los saltos de página.
+              Las páginas escaneadas (sin texto) se insertan como imagen. Los diseños complejos
+              (tablas, columnas, posiciones exactas) pueden no quedar idénticos al original.
+            </p>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -93,6 +114,7 @@
   <script src="editorView.js"></script>
   <script src="mergeView.js"></script>
   <script src="organizeView.js"></script>
+  <script src="wordView.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

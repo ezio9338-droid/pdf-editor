@@ -20,4 +20,5 @@ document.addEventListener('DOMContentLoaded', () => {
   EditorView.init();
   MergeView.init();
   OrganizeView.init();
+  WordView.init();
 });

@@ -67,3 +67,13 @@ ipcMain.handle('dialog:savePdfPath', async (_event, defaultName) => {
   if (result.canceled) return null;
   return result.filePath;
 });
+
+ipcMain.handle('dialog:saveDocxPath', async (_event, defaultName) => {
+  const result = await dialog.showSaveDialog(mainWindow, {
+    title: 'Guardar documento de Word',
+    defaultPath: defaultName || 'documento.docx',
+    filters: [{ name: 'Documento de Word', extensions: ['docx'] }]
+  });
+  if (result.canceled) return null;
+  return result.filePath;
+});

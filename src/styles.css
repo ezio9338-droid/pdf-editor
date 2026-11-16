@@ -142,3 +142,15 @@ html, body {
   background: rgba(0,0,0,0.55); border: 1px solid #666; display: flex; align-items: center; justify-content: center; font-size: 12px;
 }
 .org-page.selected .check { background: #2f6feb; border-color: #2f6feb; }
+
+/* PDF a Word */
+.word-panel { max-width: 640px; }
+.word-file {
+  background: #202124; border: 1px solid #2a2b2e; border-radius: 8px; padding: 16px; font-size: 14px;
+}
+.word-file.empty-hint { margin: 0; text-align: left; }
+.word-file .pages-count { font-size: 12px; color: #8a8b8e; margin-left: 8px; }
+.word-status { margin-top: 12px; font-size: 13px; color: #b7b8bb; min-height: 18px; }
+.word-status.ok { color: #5fd38d; }
+.word-status.error { color: #ff8f8f; }
+.word-note { margin-top: 16px; font-size: 12px; color: #8a8b8e; line-height: 1.5; }
